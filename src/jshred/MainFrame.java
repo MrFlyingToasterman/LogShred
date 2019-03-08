@@ -180,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
         PurgeUs.removeAllElements();
         jList2.setModel(JLData);
         if (again) {
-            JLData.addElement("Starting Search again...");
+            JLData.addElement("Starting Search again ...");
         } else {
             JLData.addElement("Starting Search ...");
         }
@@ -196,6 +196,9 @@ public class MainFrame extends javax.swing.JFrame {
         varlogsearch("auth.log", "Auth Logfile");
         jProgressBar1.setValue(25);
         varlogsearch("daemon.log", "Daemon Logfile");
+        varlogsearch("apt/history.log", "APT History");
+        varlogsearch("apt/term.log", "APT Term");
+        varlogsearch("apt/eipp.log.xz", "EIPP");
         jProgressBar1.setValue(30);
         varlogsearch("debug.log", "Debug Logfile");
         jProgressBar1.setValue(40);
@@ -211,6 +214,12 @@ public class MainFrame extends javax.swing.JFrame {
         jProgressBar1.setValue(90);
         varlogsearch("user.log", "User Logfile");
         varlogsearch("wmtp", "WMTP Logfile");
+        
+        if (again) {
+            JLData.addElement("Ready again!");
+        } else {
+            JLData.addElement("Ready!");
+        }
 
         jProgressBar1.setValue(100);
         jButton1.setEnabled(true);
@@ -272,7 +281,7 @@ public class MainFrame extends javax.swing.JFrame {
         for (int i = 0; i < 100; i++) {
             chkexst("/var/log/" + Name + "." + i, Bezeichnung);
         }
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             chkexst("/var/log/" + Name + "." + i + ".gz", Bezeichnung);
         }
     }
