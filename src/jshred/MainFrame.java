@@ -1,8 +1,8 @@
 package jshred;
 
-import java.awt.Color;
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -23,6 +23,9 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         jList1.setModel(PurgeUs);
+        if (homepath != "/root") {
+            JOptionPane.showMessageDialog(null, "Please run as root user", "Alert", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**
