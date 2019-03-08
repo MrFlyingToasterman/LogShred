@@ -201,6 +201,9 @@ public class MainFrame extends javax.swing.JFrame {
         varlogsearch("apt/eipp.log.xz", "EIPP");
         jProgressBar1.setValue(30);
         varlogsearch("debug.log", "Debug Logfile");
+        varlogsearch("cups/access_log", "CUPS Access Log");
+        varlogsearch("cups/error_log", "CUPS Error Log");
+        varlogsearch("cups/page_log", "CUPS Page Log");
         jProgressBar1.setValue(40);
         varlogsearch("dpkg.log", "DPKG Logfile");
         jProgressBar1.setValue(50);
