@@ -23,7 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         jList1.setModel(PurgeUs);
-        if (homepath != "/root") {
+        if (!"/root".equals(homepath)) {
             JOptionPane.showMessageDialog(null, "Please run as root user", "Alert", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -231,7 +231,7 @@ public class MainFrame extends javax.swing.JFrame {
         jProgressBar1.setValue(90);
         varlogsearch("user.log", "User Logfile");
         varlogsearch("wmtp", "WMTP Logfile");
-        JLData.addElement("Found " + PurgeUs.getSize() + " sensetive files!");
+        JLData.addElement("Found " + PurgeUs.getSize() + " sensitive files!");
         
         if (again) {
             JLData.addElement("Ready again!");
@@ -290,7 +290,6 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             Process p = new ProcessBuilder("shred", "-n 7", "-u", "-z", path).start();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         
     }
