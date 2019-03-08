@@ -51,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -172,6 +173,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem3.setText("Clear Shredbox");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuItem2.setText("Exit");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,15 +210,20 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Shred Btn
         
-        JLData.addElement("Shredding " + jList1.getSelectedValue() + " ...");
-        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
-        jProgressBar1.setValue(20);
-        shred(jList1.getSelectedValue());
-        jProgressBar1.setValue(100);
-        JLData.addElement(jList1.getSelectedValue() + " destroyed!");    
-        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        if (jList1.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(null, "Please select a file", "No file selected!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+        
+            JLData.addElement("Shredding " + jList1.getSelectedValue() + " ...");
+            jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+            jList2.ensureIndexIsVisible(JLData.size() - 1);
+            jProgressBar1.setValue(20);
+            shred(jList1.getSelectedValue());
+            jProgressBar1.setValue(100);
+            JLData.addElement(jList1.getSelectedValue() + " destroyed!");    
+            jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+            jList2.ensureIndexIsVisible(JLData.size() - 1);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -275,7 +289,21 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        //Autoshred btn
+        
+        jProgressBar1.setValue(20);
+        
+        for(int i = 0; i < PurgeUs.size(); i++) {
+            jList1.setSelectedIndex(i);
+            shred(jList1.getSelectedValue());
+            JLData.addElement(jList1.getSelectedValue() + " destroyed!");
+        }
+        JLData.addElement(PurgeUs.size() + " files destroyed!");
+        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        
+        jProgressBar1.setValue(100);
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -289,6 +317,17 @@ public class MainFrame extends javax.swing.JFrame {
         jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
         jList2.ensureIndexIsVisible(JLData.size() - 1);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // Cls Shredbox
+        PurgeUs.removeAllElements();
+        JLData.addElement("Cleared Shredbox");
+        JLData.addElement("[WARN] Lost all targets !");
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        jButton1.setEnabled(false);
+        jButton3.setEnabled(false);
+        jProgressBar1.setValue(0);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,6 +403,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
