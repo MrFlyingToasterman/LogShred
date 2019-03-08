@@ -16,6 +16,7 @@ public class MainFrame extends javax.swing.JFrame {
     public DefaultListModel PurgeUs = new DefaultListModel();
     public String homepath = System.getProperty("user.home");
     boolean again = false;
+    public String version = "1.0-alpha";
 
     /**
      * Creates new form MainFrame
