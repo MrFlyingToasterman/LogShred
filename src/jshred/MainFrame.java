@@ -228,6 +228,7 @@ public class MainFrame extends javax.swing.JFrame {
         jProgressBar1.setValue(90);
         varlogsearch("user.log", "User Logfile");
         varlogsearch("wmtp", "WMTP Logfile");
+        JLData.addElement("Found " + PurgeUs.getSize() + " sensetive files!");
         
         if (again) {
             JLData.addElement("Ready again!");
