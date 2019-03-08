@@ -1,5 +1,6 @@
 package jshred;
 
+import java.awt.Color;
 import java.io.File;
 import javax.swing.DefaultListModel;
 
@@ -169,7 +170,17 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Shred Btn
         
+        JLData.addElement("Shredding " + jList1.getSelectedValue() + " ...");
+        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        jProgressBar1.setValue(20);
+        shred(jList1.getSelectedValue());
+        jProgressBar1.setValue(100);
+        JLData.addElement(jList1.getSelectedValue() + " destroyed!");    
+        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -270,6 +281,16 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+     public void shred(String path) { 
+        try {
+            Process p = new ProcessBuilder("shred", "-n 7", "-u", "-z", path).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
     
     public void chkexst(String Path, String Name) {
         File f = new File(Path);
