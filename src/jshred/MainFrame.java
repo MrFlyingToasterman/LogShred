@@ -3,6 +3,7 @@ package jshred;
 import java.awt.FileDialog;
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 
@@ -17,7 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     public DefaultListModel PurgeUs = new DefaultListModel();
     public String homepath = System.getProperty("user.home");
     boolean again = false;
-    public String version = "1.0";
+    public String version = "1.1";
     int shredcount = 7;
     String addzeros = "-z";
     String deletefileafter = "-u";
@@ -60,6 +61,8 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -206,6 +209,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem8.setText("Add folder");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem8);
+
+        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem9.setText("Add device");
+        jMenu1.add(jMenuItem9);
+
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem3.setText("Clear Shredbox");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -300,8 +316,7 @@ public class MainFrame extends javax.swing.JFrame {
             shred(jList1.getSelectedValue());
             jProgressBar1.setValue(100);
             JLData.addElement(jList1.getSelectedValue() + " destroyed!");    
-            jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-            jList2.ensureIndexIsVisible(JLData.size() - 1);
+            scroll();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -360,10 +375,8 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         jProgressBar1.setValue(100);
-        jButton1.setEnabled(true);
-        jButton3.setEnabled(true);
-        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        freeControls();
+        scroll();
         again = true;
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -378,18 +391,20 @@ public class MainFrame extends javax.swing.JFrame {
             JLData.addElement(jList1.getSelectedValue() + " destroyed!");
         }
         JLData.addElement(PurgeUs.size() + " files destroyed!");
-        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        scroll();
         
         jProgressBar1.setValue(100);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        //Quit
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        //Add File
+        
         //PurgeUs.addElement(JOptionPane.showInputDialog("Bitte geben sie den Pfad an:"));
         FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
         fd.setDirectory(homepath);
@@ -401,10 +416,8 @@ public class MainFrame extends javax.swing.JFrame {
           PurgeUs.addElement(fd.getDirectory() + filename);
         }
         
-        jButton1.setEnabled(true);
-        jButton3.setEnabled(true);
-        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        freeControls();
+        scroll();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -413,12 +426,11 @@ public class MainFrame extends javax.swing.JFrame {
         JLData.addElement("Cleared Shredbox");
         JLData.addElement("[WARN] Lost all targets !");
         jList2.ensureIndexIsVisible(JLData.size() - 1);
-        jButton1.setEnabled(false);
-        jButton3.setEnabled(false);
-        jProgressBar1.setValue(0);
+        unfreeControls();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        //Set Shredcount
         String shredinttest = JOptionPane.showInputDialog("How many times should a file be overwritten ?");
         if (shredinttest != null) {
         
@@ -428,13 +440,15 @@ public class MainFrame extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Please enter a Number!", "Alert", JOptionPane.INFORMATION_MESSAGE);
             }
+            scroll();
         
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        //Get Shredcount
         JLData.addElement("[INFO] Current Shredcount: " + shredcount);
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        scroll();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -447,6 +461,25 @@ public class MainFrame extends javax.swing.JFrame {
         //About
         JOptionPane.showMessageDialog(null, "This is free as in freedom Software under GPLv3.\nYou can find the Source here: https://www.GitHub.com/MrFlyingToasterman/LogShred\nThis is a Software from Secure Solutions: www.Secure-Solutions.org", "About LogShred", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // Add Folder
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new java.io.File(homepath)); // start at application current directory
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fc.showOpenDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File shredFolder = fc.getSelectedFile();
+            JLData.addElement("Adding files from folder: " + shredFolder.getAbsolutePath());
+            File[] shredFiles = new File(shredFolder.getAbsolutePath()).listFiles();
+            
+            for (int i = 0; i < shredFiles.length; i++) {
+                String convertme = shredFiles[i].getAbsolutePath();
+                PurgeUs.addElement(shredFiles[i].getAbsolutePath());
+            }
+            freeControls();
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -540,7 +573,23 @@ public class MainFrame extends javax.swing.JFrame {
         ret = false;
     }
     return ret;
-}
+    }
+    
+    public void freeControls() {
+        jButton1.setEnabled(true);
+        jButton3.setEnabled(true);
+    }
+    
+    public void unfreeControls() {
+        jButton1.setEnabled(false);
+        jButton3.setEnabled(false);
+        jProgressBar1.setValue(0);
+    }
+    
+    public void scroll() {
+        jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -564,6 +613,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
