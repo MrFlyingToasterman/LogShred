@@ -1,7 +1,33 @@
+/*
+ * MainFrame.java
+ * 
+ * Copyright 2019 Secure-Solutions <dmusiolik@Bellatrix>
+ * 
+ * www.Secure-Solutions.org
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * 
+ */
+
 package jshred;
 
 import java.awt.FileDialog;
 import java.io.File;
+import java.net.InetAddress;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -339,12 +365,20 @@ public class MainFrame extends javax.swing.JFrame {
         }
         JLData.addElement("Set homepath to: " + homepath);
         chkexst(homepath + "/.bash_history", "Bash History File");
+        chkexst(homepath + "/.gitconfig", "Git Config File");
         jProgressBar1.setValue(2);
         chkexst(homepath + "/.viminfo", "Viminfo");
         jProgressBar1.setValue(4);
+        chkexst(homepath + "/.ssh/known_hosts", "SSH known hosts");
+        try {
+            chkexst(homepath + "/.config/fish/fishd." + InetAddress.getLocalHost().getHostName(), "Fish History File");
+        } catch (Exception e) {
+        }
         chkexst(homepath + "/.swp", "Vim SWAP File");
         jProgressBar1.setValue(10);
         varlogsearch("alternatives.log", "Alternatives Logfile");
+        chkexst(homepath + "/.zenmap/recent_scans.txt", "Nmap Logfile");
+        chkexst(homepath + "/.zenmap/target_list.txt", "Nmap Logfile");
         jProgressBar1.setValue(15);
         varlogsearch("auth.log", "Auth Logfile");
         jProgressBar1.setValue(25);
@@ -362,6 +396,18 @@ public class MainFrame extends javax.swing.JFrame {
         varlogsearch("lastlog", "Lastlog");
         jProgressBar1.setValue(50);
         varlogsearch("faillog.log", "FAIL Logfile");
+        varlogsearch("faillog", "FAIL Logfile");
+        varlogsearch("httpd/access_log", "Apache Accesslog");
+        varlogsearch("httpd/error_log", "Apache Errorlog");
+        varlogsearch("pacman.log", "Pacman Logfile");
+        varlogsearch("Xorg", "X11 Logfile");
+        varlogsearch("xorg", "X11 Logfile");
+        for (int i = 0; i < 100; i++) {
+            varlogsearch("Xorg." + i + ".log", "X11 Logfile");
+            varlogsearch("xorg." + i + ".log", "X11 Logfile");
+        }
+        varlogsearch("zeronet/debug.log", "Zeronet Logfile");
+        varlogsearch("zeronet/debug-last.log", "Zeronet Logfile");
         jProgressBar1.setValue(60);
         varlogsearch("kern.log", "Linux Kernel Logfile");
         jProgressBar1.setValue(70);
@@ -565,6 +611,9 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void varlogsearch(String Name, String Bezeichnung) {
         chkexst("/var/log/" + Name, Bezeichnung);
+        chkexst("/var/log/" + Name + ".old", Bezeichnung );
+        chkexst("/var/log/" + Name + ".new", Bezeichnung);
+        chkexst("/var/log/" + Name + ".log", Bezeichnung);
         for (int i = 0; i < 100; i++) {
             chkexst("/var/log/" + Name + "." + i, Bezeichnung);
         }
