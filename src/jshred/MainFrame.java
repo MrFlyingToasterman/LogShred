@@ -220,6 +220,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem9.setText("Add device");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem9);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
@@ -474,12 +479,17 @@ public class MainFrame extends javax.swing.JFrame {
             File[] shredFiles = new File(shredFolder.getAbsolutePath()).listFiles();
             
             for (int i = 0; i < shredFiles.length; i++) {
-                String convertme = shredFiles[i].getAbsolutePath();
                 PurgeUs.addElement(shredFiles[i].getAbsolutePath());
             }
             freeControls();
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // Add device
+        JOptionPane.showMessageDialog(null, "comming soon", "Alert", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
      * @param args the command line arguments
