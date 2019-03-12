@@ -7,8 +7,12 @@ GUI tool for the UNIX shred command with a focus on shredding logfiles in Linux.
 # Easy shred configuration
 ![LogShred](preview2.png?raw=true "Preview")
 
-# Custom files: You can shred what you want
+# Custom files: you can shred what you want
 ![LogShred](preview3.png?raw=true "Preview")
+
+# How to run as root
+    
+    user@Hostname$ sudo java -jar jshred.jar
 
 # License
 ![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)
