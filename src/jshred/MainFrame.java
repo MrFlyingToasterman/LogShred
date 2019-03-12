@@ -18,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     public String homepath = System.getProperty("user.home");
     boolean again = false;
     public String version = "1.1-alpha";
+    int shredcount = 7;
 
     /**
      * Creates new form MainFrame
@@ -56,6 +57,9 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LogShred");
@@ -196,6 +200,28 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("ForceCTRL");
+
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem4.setText("Set Shred count");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem5.setText("Print current Shred count");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -345,6 +371,21 @@ public class MainFrame extends javax.swing.JFrame {
         jProgressBar1.setValue(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        String shredinttest = JOptionPane.showInputDialog("How many times should a file be overwritten ?");
+        if (isNum(shredinttest)) {
+            shredcount = Integer.parseInt(shredinttest);
+            JLData.addElement("[WARN] Shredcount was set to " + shredcount);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please enter a Number!", "Alert", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        JLData.addElement("[INFO] Current Shredcount: " + shredcount);
+        jList2.ensureIndexIsVisible(JLData.size() - 1);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -381,8 +422,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
      public void shred(String path) { 
+         
+         
         try {
-            Process p = new ProcessBuilder("shred", "-n 7", "-u", "-z", path).start();
+            Process p = new ProcessBuilder("shred", "-n " + shredcount, "-u", "-z", path).start();
         } catch (Exception e) {
         }
         
@@ -406,6 +449,19 @@ public class MainFrame extends javax.swing.JFrame {
             chkexst("/var/log/" + Name + "." + i + ".gz", Bezeichnung);
         }
     }
+    
+    public static boolean isNum(String strNum) {
+    boolean ret = true;
+    try {
+
+        Double.parseDouble(strNum);
+
+    }catch (NumberFormatException e) {
+        ret = false;
+    }
+    return ret;
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton jButton1;
@@ -416,10 +472,13 @@ public class MainFrame extends javax.swing.JFrame {
     public static javax.swing.JList<String> jList1;
     public static javax.swing.JList<String> jList2;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
