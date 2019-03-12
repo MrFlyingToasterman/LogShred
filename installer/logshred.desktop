@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=LogShred (as root)
+GenericName=LogShred
+TryExec=/usr/share/LogShred/su-to-logshred.sh
+Exec=/usr/share/zenmap/su-to-logshred.sh %F
+Terminal=false
+Icon=builder
+Type=Application
+Categories=Application;
+Comment=A GUI for shred
+Keywords=scan;scanner;security;
+
