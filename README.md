@@ -1,8 +1,14 @@
 # LogShred
-GUI tool for shredding logfiles in Linux
+GUI tool for the UNIX shred command with a focus on shredding logfiles in Linux.
 
 # Preview
-![LogShred](preview.png?raw=true "Preview")
+![LogShred](preview1.png?raw=true "Preview")
+
+# Easy shred configuration
+![LogShred](preview2.png?raw=true "Preview")
+
+# Custom files: You can shred what you want
+![LogShred](preview3.png?raw=true "Preview")
 
 # License
 ![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)
