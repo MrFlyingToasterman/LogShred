@@ -1,5 +1,6 @@
 package jshred;
 
+import java.awt.FileDialog;
 import java.io.File;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        jList2.setModel(JLData);
         jList1.setModel(PurgeUs);
         if (!"/root".equals(homepath)) {
             JOptionPane.showMessageDialog(null, "Please run as root user", "Alert", JOptionPane.INFORMATION_MESSAGE);
@@ -233,7 +235,7 @@ public class MainFrame extends javax.swing.JFrame {
         jProgressBar1.setValue(1);
         JLData.removeAllElements();
         PurgeUs.removeAllElements();
-        jList2.setModel(JLData);
+    
         if (again) {
             JLData.addElement("Starting Search again ...");
         } else {
@@ -312,7 +314,17 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        PurgeUs.addElement(JOptionPane.showInputDialog("Bitte geben sie den Pfad an:"));
+        //PurgeUs.addElement(JOptionPane.showInputDialog("Bitte geben sie den Pfad an:"));
+        FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
+        fd.setDirectory(homepath);
+        fd.setVisible(true);
+        String filename = fd.getFile();
+        if (filename == null) {
+          JOptionPane.showMessageDialog(null, "You cancelled the choice", "No file selected!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+          PurgeUs.addElement(fd.getDirectory() + filename);
+        }
+        
         jButton1.setEnabled(true);
         jButton3.setEnabled(true);
         jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
