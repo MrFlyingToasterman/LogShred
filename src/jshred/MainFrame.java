@@ -17,7 +17,7 @@ public class MainFrame extends javax.swing.JFrame {
     public DefaultListModel PurgeUs = new DefaultListModel();
     public String homepath = System.getProperty("user.home");
     boolean again = false;
-    public String version = "1.1-alpha";
+    public String version = "1.0";
     int shredcount = 7;
     String addzeros = "-z";
     String deletefileafter = "-u";
@@ -32,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (!"/root".equals(homepath)) {
             JOptionPane.showMessageDialog(null, "Please run as root user", "Alert", JOptionPane.INFORMATION_MESSAGE);
         }
+        welcome();
     }
 
     /**
@@ -60,6 +61,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -209,6 +211,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem6.setText("Clear Infobox");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem2.setText("Exit");
@@ -410,6 +420,12 @@ public class MainFrame extends javax.swing.JFrame {
         jList2.ensureIndexIsVisible(JLData.size() - 1);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // Clear INFOBOX
+        JLData.removeAllElements();
+        welcome();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -443,6 +459,11 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
+    }
+    
+    public void welcome() {
+        JLData.addElement("Welcome to LogShred!");
+        JLData.addElement("Version: " + version);
     }
     
      public void shred(String path) { 
@@ -518,6 +539,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
