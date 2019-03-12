@@ -373,11 +373,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         String shredinttest = JOptionPane.showInputDialog("How many times should a file be overwritten ?");
-        if (isNum(shredinttest)) {
-            shredcount = Integer.parseInt(shredinttest);
-            JLData.addElement("[WARN] Shredcount was set to " + shredcount);
-        } else {
-            JOptionPane.showMessageDialog(null, "Please enter a Number!", "Alert", JOptionPane.INFORMATION_MESSAGE);
+        if (shredinttest != null) {
+        
+            if (isNum(shredinttest)) {
+                shredcount = Integer.parseInt(shredinttest);
+                JLData.addElement("[WARN] Shredcount was set to " + shredcount);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please enter a Number!", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            }
+        
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
