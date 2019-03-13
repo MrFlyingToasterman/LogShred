@@ -549,7 +549,8 @@ public class MainFrame extends javax.swing.JFrame {
                 jButton3.setEnabled(false);
                 jCheckBox2.setEnabled(false);
                 deletefileafter = "";
-                jButton2.setEnabled(true);
+                jButton1.setEnabled(true);
+                JLData.addElement("[INFO] Shredding a physical device will take a while, even if LogShred tells you it is done!");
                 scroll();
             } else {
                 JOptionPane.showMessageDialog(null, "Please enter a physical device", "Alert", JOptionPane.INFORMATION_MESSAGE);
