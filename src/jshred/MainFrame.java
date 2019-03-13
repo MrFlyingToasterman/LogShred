@@ -525,7 +525,7 @@ public class MainFrame extends javax.swing.JFrame {
             File[] shredFiles = new File(shredFolder.getAbsolutePath()).listFiles();
             
             for (int i = 0; i < shredFiles.length; i++) {
-                PurgeUs.addElement(shredFiles[i].getAbsolutePath());
+                chkexst(shredFiles[i].getAbsolutePath(), shredFiles[i].getName());
             }
             freeControls();
         }
