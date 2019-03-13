@@ -22,7 +22,7 @@ or
 
     user@Hostname$ sudo ssls
 
-# How to install
+# How to install LogShred
 Navigate to "installer/"
 
     user@Hostname$ sudo sh install.sh
@@ -32,7 +32,7 @@ Navigate to "installer/"
 
     user@Hostname$ sudo sh install-update.sh
 
-# How to remove LogShrd from your System
+# How to remove LogShred from your System
 Navigate to "installer/"
 
     user@Hostname$ sudo sh uninstall.sh
