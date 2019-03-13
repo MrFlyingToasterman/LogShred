@@ -44,10 +44,11 @@ public class MainFrame extends javax.swing.JFrame {
     public DefaultListModel PurgeUs = new DefaultListModel();
     public String homepath = System.getProperty("user.home");
     boolean again = false;
-    public String version = "1.4";
+    public String version = "1.5";
     int shredcount = 7;
     String addzeros = "-z";
     String deletefileafter = "-u";
+    boolean devicemodus = false;
 
     /**
      * Creates new form MainFrame
@@ -60,6 +61,9 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please run as root user", "Alert", JOptionPane.INFORMATION_MESSAGE);
         }
         welcome();
+        jProgressBar1.setValue(0);
+        jProgressBar1.setStringPainted(true);
+        jProgressBar1.setMaximum(100);
     }
 
     /**
@@ -121,10 +125,10 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(184, 2, 2));
+        jLabel1.setForeground(new java.awt.Color(206, 57, 57));
         jLabel1.setText("LogShred");
 
-        jLabel2.setForeground(new java.awt.Color(184, 2, 2));
+        jLabel2.setForeground(new java.awt.Color(157, 77, 77));
         jLabel2.setText("It never happend ;)");
 
         jList1.setBackground(new java.awt.Color(36, 36, 37));
@@ -339,14 +343,21 @@ public class MainFrame extends javax.swing.JFrame {
         if (jList1.getSelectedValue() == null) {
             JOptionPane.showMessageDialog(null, "Please select a file", "No file selected!", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            
+            newprogress();
         
             JLData.addElement("Shredding " + jList1.getSelectedValue() + " ...");
             jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
             jList2.ensureIndexIsVisible(JLData.size() - 1);
-            jProgressBar1.setValue(20);
             shred(jList1.getSelectedValue());
-            jProgressBar1.setValue(100);
+            
+            if (devicemodus) {
+                autoprogress(50000);
+            } else {
+                autoprogress(500);
+            }
             JLData.addElement(jList1.getSelectedValue() + " destroyed!");    
+            
             scroll();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -354,7 +365,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Search Btn
         
-        jProgressBar1.setValue(1);
+        newprogress();
+        progress();
+        
         JLData.removeAllElements();
         PurgeUs.removeAllElements();
     
@@ -366,55 +379,91 @@ public class MainFrame extends javax.swing.JFrame {
         JLData.addElement("Set homepath to: " + homepath);
         chkexst(homepath + "/.bash_history", "Bash History File");
         chkexst(homepath + "/.gitconfig", "Git Config File");
-        jProgressBar1.setValue(2);
         chkexst(homepath + "/.viminfo", "Viminfo");
-        jProgressBar1.setValue(4);
         chkexst(homepath + "/.ssh/known_hosts", "SSH known hosts");
         try {
             chkexst(homepath + "/.config/fish/fishd." + InetAddress.getLocalHost().getHostName(), "Fish History File");
         } catch (Exception e) {
         }
         chkexst(homepath + "/.swp", "Vim SWAP File");
-        jProgressBar1.setValue(10);
-        varlogsearch("alternatives.log", "Alternatives Logfile");
         chkexst(homepath + "/.zenmap/recent_scans.txt", "Nmap Logfile");
         chkexst(homepath + "/.zenmap/target_list.txt", "Nmap Logfile");
-        jProgressBar1.setValue(15);
+        chkexst(homepath + "/.zshrc", "ZSH History File");
+        chkexst(homepath + "/.wget-hsts", "wget History File");
+        chkexst(homepath + "/.lesshst", "less History File");
+        
+        progress();
+        
+        varlogsearch("alternatives.log", "Alternatives Logfile");
         varlogsearch("auth.log", "Auth Logfile");
-        jProgressBar1.setValue(25);
         varlogsearch("daemon.log", "Daemon Logfile");
         varlogsearch("apt/history.log", "APT History");
         varlogsearch("apt/term.log", "APT Term");
         varlogsearch("apt/eipp.log.xz", "EIPP");
-        jProgressBar1.setValue(30);
+        
+        progress();
+        
+        varlogsearch("debug", "Debug Logfile");
         varlogsearch("debug.log", "Debug Logfile");
         varlogsearch("cups/access_log", "CUPS Access Log");
         varlogsearch("cups/error_log", "CUPS Error Log");
         varlogsearch("cups/page_log", "CUPS Page Log");
-        jProgressBar1.setValue(40);
+        varlogsearch("clamav/clamav.log", "ClamAV Logfile");
+        varlogsearch("clamav/freshclam.log", "ClamAV Logfile");
+        varlogsearch("dpkg", "DPKG Logfile");
         varlogsearch("dpkg.log", "DPKG Logfile");
         varlogsearch("lastlog", "Lastlog");
-        jProgressBar1.setValue(50);
         varlogsearch("faillog.log", "FAIL Logfile");
+        
+        progress();
+        
         varlogsearch("faillog", "FAIL Logfile");
         varlogsearch("httpd/access_log", "Apache Accesslog");
         varlogsearch("httpd/error_log", "Apache Errorlog");
+        varlogsearch("httpd/other_vhosts_access.log", "Apache other_vhosts_access");
+        varlogsearch("apache2/access_log", "Apache Accesslog");
+        varlogsearch("apache2/error_log", "Apache Errorlog");
+        varlogsearch("apache2/other_vhosts_access.log", "Apache other_vhosts_access");
         varlogsearch("pacman.log", "Pacman Logfile");
         varlogsearch("Xorg", "X11 Logfile");
+        
+        progress();
+        
         varlogsearch("xorg", "X11 Logfile");
+        varlogsearch("dbconfig-common/dbc.log", "DBC Logfile");
+        varlogsearch("exim4/mainlog", "DBC Logfile");
+        varlogsearch("installer/syslog", "Debian Syslog");
+        varlogsearch("installer/status", "Debian Statuslog");
+        varlogsearch("installer/hardware-summary", "Debian hardware-summary");
+        varlogsearch("mysql/error.log", "MySQL Errorlog");
+        varlogsearch("proftpd/controls.log", "ProFTPd Control Log");
+        varlogsearch("proftpd/proftpd.log", "ProFTPd Log");
+        varlogsearch("proftpd/xferlog", "ProFTPd xfer Log");
+        varlogsearch("proftpd/xferreport", "ProFTPd xfer Report");
+        progress();
+        varlogsearch("vsftpd.log", "vsFTP Log");
         for (int i = 0; i < 100; i++) {
             varlogsearch("Xorg." + i + ".log", "X11 Logfile");
             varlogsearch("xorg." + i + ".log", "X11 Logfile");
+            varlogsearch("Xorg." + i + ".log.old", "Old X11 Logfile");
+            varlogsearch("xorg." + i + ".log.old", "Old X11 Logfile");
+            varlogsearch("installer/Xorg." + i + ".log", "X11 Logfile");
+            varlogsearch("installer/xorg." + i + ".log", "X11 Logfile");
+            varlogsearch("installer/Xorg." + i + ".log.old", "Old X11 Logfile");
+            varlogsearch("installer/xorg." + i + ".log.old", "Old X11 Logfile");
+            chkexst(homepath + "/.local/share/xorg/Xorg." + i + ".log", "Private X11 Logfile");
+            chkexst(homepath + "/.local/share/xorg/xorg." + i + ".log", "Private X11 Logfile");
+            chkexst(homepath + "/.local/share/xorg/Xorg." + i + ".log.old", "Old Private X11 Logfile");
+            chkexst(homepath + "/.local/share/xorg/xorg." + i + ".log.old", "Old Private X11 Logfile");
         }
+        progress();
+        progress();
+        progress();
         varlogsearch("zeronet/debug.log", "Zeronet Logfile");
         varlogsearch("zeronet/debug-last.log", "Zeronet Logfile");
-        jProgressBar1.setValue(60);
         varlogsearch("kern.log", "Linux Kernel Logfile");
-        jProgressBar1.setValue(70);
         varlogsearch("messages", "Messages Logfile");
-        jProgressBar1.setValue(80);
         varlogsearch("syslog", "Syslog Logfile");
-        jProgressBar1.setValue(90);
         varlogsearch("user.log", "User Logfile");
         varlogsearch("wmtp", "WMTP Logfile");
         JLData.addElement("Found " + PurgeUs.getSize() + " sensitive files!");
@@ -425,20 +474,21 @@ public class MainFrame extends javax.swing.JFrame {
             JLData.addElement("Ready!");
         }
 
-        jProgressBar1.setValue(100);
         freeControls();
         scroll();
         again = true;
+        
+        progress();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Autoshred btn
         
-        jProgressBar1.setValue(20);
-        
         for(int i = 0; i < PurgeUs.size(); i++) {
+            newprogress();
             jList1.setSelectedIndex(i);
             shred(jList1.getSelectedValue());
+            autoprogress(100);
             JLData.addElement(jList1.getSelectedValue() + " destroyed!");
         }
         JLData.addElement(PurgeUs.size() + " files destroyed!");
@@ -462,9 +512,12 @@ public class MainFrame extends javax.swing.JFrame {
         fd.setVisible(true);
         String filename = fd.getFile();
         if (filename == null) {
-          JOptionPane.showMessageDialog(null, "You cancelled the choice", "No file selected!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "You cancelled the choice", "No file selected!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-          PurgeUs.addElement(fd.getDirectory() + filename);
+            newprogress();
+            autoprogress(5);
+            PurgeUs.addElement(fd.getDirectory() + filename);
+            jProgressBar1.setValue(0);
         }
         
         freeControls();
@@ -473,11 +526,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // Cls Shredbox
+        newprogress();
         PurgeUs.removeAllElements();
         JLData.addElement("Cleared Shredbox");
         JLData.addElement("[WARN] Lost all targets !");
+        autoprogress(1);
         scroll();
         unfreeControls();
+        jProgressBar1.setValue(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -492,14 +548,16 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter a Number!", "Alert", JOptionPane.INFORMATION_MESSAGE);
             }
             scroll();
-        
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         //Get Shredcount
+        newprogress();
         JLData.addElement("[INFO] Current Shredcount: " + shredcount);
+        autoprogress(1);
         scroll();
+        jProgressBar1.setValue(0);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -525,11 +583,15 @@ public class MainFrame extends javax.swing.JFrame {
             File[] shredFiles = new File(shredFolder.getAbsolutePath()).listFiles();
             
             for (int i = 0; i < shredFiles.length; i++) {
+                newprogress();
                 chkexst(shredFiles[i].getAbsolutePath(), shredFiles[i].getName());
+                autoprogress(5);
             }
             freeControls();
             
             scroll();
+            
+            jProgressBar1.setValue(0);
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
@@ -543,11 +605,14 @@ public class MainFrame extends javax.swing.JFrame {
         
         if (!shredDevice.equals("")) {
             if (shredDevice.contains("/dev/")) {
+                newprogress();
                 JLData.addElement("[WARN] Entering device shred mode!");
                 PurgeUs.removeAllElements();
                 PurgeUs.addElement(shredDevice);
                 JLData.addElement("[WARN] Lost old targets!");
                 JLData.addElement("[WARN] Setting options to shred physical device ...");
+                autoprogress(50);
+                devicemodus = true;
                 jCheckBox2.setSelected(false);
                 shredcount = 2;
                 JLData.addElement("[WARN] Shredcount was set to 2");
@@ -670,6 +735,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1.setEnabled(true);
         jButton3.setEnabled(true);
         jCheckBox2.setEnabled(true);
+        devicemodus = false;
     }
     
     public void unfreeControls() {
@@ -682,6 +748,37 @@ public class MainFrame extends javax.swing.JFrame {
     public void scroll() {
         jList1.ensureIndexIsVisible(PurgeUs.size() - 1);
         jList2.ensureIndexIsVisible(JLData.size() - 1);
+    }
+    
+    public void newprogress() {
+          
+        jProgressBar1.setValue(0);
+        
+    }
+    
+    public void autoprogress(int milis) {
+          
+        for (int i = 0; i <= 10; i++) {
+            try {
+                progress();
+                Thread.sleep(milis);
+            } catch (Exception e) {
+            }
+        }
+        
+    }
+    
+    public void progress() {
+          
+    Runnable runner = new Runnable() {
+        public void run() {
+                jProgressBar1.setValue(jProgressBar1.getValue()+10);
+                jProgressBar1.update(jProgressBar1.getGraphics());
+        }
+    };
+    Thread t = new Thread(runner);
+    t.start();
+        
     }
 
 
