@@ -535,7 +535,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // Add device
-        String shredDevice = JOptionPane.showInputDialog("Wich device should be overwritten ?\nFor example /dev/sdb\n\nWARNING: You device will be erazed!!!");
+        
+        String shredDevice = "";
+        
+        try {
+            shredDevice = JOptionPane.showInputDialog("Wich device should be overwritten ?\nFor example /dev/sdb\n\nWARNING: You device will be erazed!!!");
+        
         if (!shredDevice.equals("")) {
             if (shredDevice.contains("/dev/")) {
                 JLData.addElement("[WARN] Entering device shred mode!");
@@ -558,6 +563,10 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No device added!", "Alert", JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        } catch (NullPointerException e) {
+        }
+    
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
