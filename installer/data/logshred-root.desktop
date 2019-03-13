@@ -1,7 +1,8 @@
 [Desktop Entry]
-Name=LogShred
+Name=LogShred-root
 GenericName=Shred all Logfiles!
-Exec=/bin/ssls
+TryExec=/usr/share/LogShred/su-to-logshred.sh
+Exec=/usr/share/LogShred/su-to-logshred.sh %F
 Terminal=false
 Icon=builder
 Type=Application

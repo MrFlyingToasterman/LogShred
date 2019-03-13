@@ -11,7 +11,9 @@ chmod ugo+x /usr/share/LogShred/jshred.jar
 cp data/su-to-logshred.sh /usr/share/LogShred
 chmod ugo+x /usr/share/LogShred/su-to-logshred.sh
 rm /usr/share/applications/logshred.desktop
+rm /usr/share/applications/logshred-root.desktop
 cp data/logshred.desktop /usr/share/applications
+cp data/logshred-root.desktop /usr/share/applications
 rm /bin/ssls
 touch /bin/ssls
 echo "#! /bin/bash" > /bin/ssls
