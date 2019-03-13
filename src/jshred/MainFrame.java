@@ -44,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
     public DefaultListModel PurgeUs = new DefaultListModel();
     public String homepath = System.getProperty("user.home");
     boolean again = false;
-    public String version = "1.1";
+    public String version = "1.4";
     int shredcount = 7;
     String addzeros = "-z";
     String deletefileafter = "-u";
@@ -476,7 +476,7 @@ public class MainFrame extends javax.swing.JFrame {
         PurgeUs.removeAllElements();
         JLData.addElement("Cleared Shredbox");
         JLData.addElement("[WARN] Lost all targets !");
-        jList2.ensureIndexIsVisible(JLData.size() - 1);
+        scroll();
         unfreeControls();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -510,7 +510,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         //About
-        JOptionPane.showMessageDialog(null, "This is free as in freedom Software under GPLv3.\nYou can find the Source here: https://www.GitHub.com/MrFlyingToasterman/LogShred\nThis is a Software from Secure Solutions: www.Secure-Solutions.org", "About LogShred", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "LogShred Version " + version + "\n\nThis is free as in freedom Software under GPLv3, created by Darius Musiolik.\nYou can find the Source here: https://www.GitHub.com/MrFlyingToasterman/LogShred\nThis is a Software from Secure Solutions: www.Secure-Solutions.org", "About LogShred", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
@@ -528,13 +528,35 @@ public class MainFrame extends javax.swing.JFrame {
                 chkexst(shredFiles[i].getAbsolutePath(), shredFiles[i].getName());
             }
             freeControls();
+            
+            scroll();
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // Add device
-        JOptionPane.showMessageDialog(null, "comming soon", "Alert", JOptionPane.INFORMATION_MESSAGE);
-        return;
+        String shredDevice = JOptionPane.showInputDialog("Wich device should be overwritten ?\nFor example /dev/sdb\n\nWARNING: You device will be erazed!!!");
+        if (!shredDevice.equals("")) {
+            if (shredDevice.contains("/dev/")) {
+                JLData.addElement("[WARN] Entering device shred mode!");
+                PurgeUs.removeAllElements();
+                PurgeUs.addElement(shredDevice);
+                JLData.addElement("[WARN] Lost old targets!");
+                JLData.addElement("[WARN] Setting options to shred physical device ...");
+                jCheckBox2.setSelected(false);
+                shredcount = 2;
+                JLData.addElement("[WARN] Shredcount was set to 2");
+                jButton3.setEnabled(false);
+                jCheckBox2.setEnabled(false);
+                deletefileafter = "";
+                jButton2.setEnabled(true);
+                scroll();
+            } else {
+                JOptionPane.showMessageDialog(null, "Please enter a physical device", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No device added!", "Alert", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
@@ -637,11 +659,13 @@ public class MainFrame extends javax.swing.JFrame {
     public void freeControls() {
         jButton1.setEnabled(true);
         jButton3.setEnabled(true);
+        jCheckBox2.setEnabled(true);
     }
     
     public void unfreeControls() {
         jButton1.setEnabled(false);
         jButton3.setEnabled(false);
+        jCheckBox2.setEnabled(true);
         jProgressBar1.setValue(0);
     }
     
