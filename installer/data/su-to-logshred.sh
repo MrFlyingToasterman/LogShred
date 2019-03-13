@@ -1,11 +1,11 @@
-#!/bin/sh
+#! /bin/bash
 #this code is bassed off of the debian su-to-root command
 #Joost Witteveen <joostje@debian.org>
 #Morten Brix Pedersen
 #Bill Allombert <ballombe@debian.org>
-
+echo "Starte..."
 PRIV=root
-COMMAND="ssls"
+COMMAND="/bin/ssls"
 
 quote () { printf %s\\n "$1" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/" ; }
 

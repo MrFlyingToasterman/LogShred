@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=LogShred (as root)
-GenericName=LogShred
+Name=LogShred
+GenericName=Shred all Logfiles!
 TryExec=/usr/share/LogShred/su-to-logshred.sh
-Exec=/usr/share/zenmap/su-to-logshred.sh %F
-Terminal=false
+Exec=/usr/share/LogShred/su-to-logshred.sh %F
+Terminal=true
 Icon=builder
 Type=Application
 Categories=Application;
